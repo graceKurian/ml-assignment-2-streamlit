@@ -49,5 +49,17 @@ using standard evaluation metrics.
 | Random Forest (Ensemble) | 0.8162 | 0.7736 | 0.6618 | 0.3451 | 0.4537 | 0.3834 |
 | XGBoost (Ensemble) | 0.8180 | 0.7748 | 0.6607 | 0.3640 | 0.4694 | 0.3945 |
 
+## Model-wise Observations
+
+| ML Model | Observation |
+|---------|-------------|
+| Logistic Regression | The model achieves good accuracy but low recall, indicating that it is conservative in predicting defaults. It performs well as a baseline linear classifier but struggles to capture complex non-linear patterns in the data. |
+| Decision Tree | The Decision Tree improves recall and F1 score compared to Logistic Regression, showing its ability to model non-linear relationships. However, it may overfit and lacks the robustness of ensemble methods. |
+| K-Nearest Neighbors | KNN shows moderate performance with reasonable recall but slightly lower accuracy. Its performance is affected by high dimensionality and sensitivity to feature scaling. |
+| Naive Bayes | Naive Bayes achieves very high recall but extremely low accuracy and precision, indicating many false positives. This behavior is expected due to the strong independence assumptions made by the model. |
+| Random Forest (Ensemble) | Random Forest provides a strong balance between precision and recall with improved AUC and MCC. The ensemble approach reduces overfitting and improves overall generalization. |
+| XGBoost (Ensemble) | XGBoost delivers the best overall performance with the highest AUC, F1 score, and MCC. Gradient boosting effectively captures complex patterns and handles class imbalance better than other models. |
+
+
 
 
