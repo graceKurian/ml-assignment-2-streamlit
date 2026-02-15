@@ -17,91 +17,96 @@ from sklearn.metrics import (
 # ---------------------------------------------------
 # Page Config
 # ---------------------------------------------------
-st.set_page_config(page_title="Enterprise Credit Risk Dashboard", layout="wide")
+st.set_page_config(
+    page_title="Enterprise Credit Risk Analytics",
+    layout="wide"
+)
 
 # ---------------------------------------------------
-# Clean Enterprise Dark Theme (Subtle)
+# GLOBAL DARK THEME
 # ---------------------------------------------------
 st.markdown("""
 <style>
-body {
+
+/* Main background */
+.stApp {
     background-color: #0f172a;
     color: #e2e8f0;
 }
 
-.main-container {
-    max-width: 1100px;
-    margin: auto;
+/* Headers */
+h1, h2, h3 {
+    color: #f8fafc !important;
 }
 
-.header-title {
-    font-size: 34px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-.header-subtitle {
-    font-size: 15px;
+/* Subtext */
+.subtitle {
     color: #94a3b8;
-    margin-bottom: 35px;
-}
-
-.section-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    margin-top: 10px;
-}
-
-.soft-box {
-    background-color: #1e293b;
-    padding: 22px;
-    border-radius: 10px;
-    border: 1px solid #334155;
+    font-size: 15px;
     margin-bottom: 25px;
 }
 
+/* Divider */
+hr {
+    border: 1px solid #1e293b;
+}
+
+/* Selectbox styling */
+.stSelectbox > div > div {
+    background-color: #1e293b;
+    color: white;
+}
+
+/* File uploader styling */
+.stFileUploader > div {
+    background-color: #1e293b;
+    color: white;
+}
+
+/* Metric cards */
 .metric-card {
     background-color: #111827;
-    padding: 16px;
-    border-radius: 8px;
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
-    border: 1px solid #334155;
+    border: 1px solid #1f2937;
+}
+
+.metric-title {
+    font-size: 14px;
+    color: #9ca3af;
 }
 
 .metric-value {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 600;
     color: #3b82f6;
 }
 
-.metric-label {
-    font-size: 13px;
-    color: #94a3b8;
+/* Dataframe dark tweak */
+[data-testid="stDataFrame"] {
+    background-color: #111827;
+    color: white;
 }
 
-.footer {
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
-    margin-top: 40px;
-}
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<div class='main-container'>", unsafe_allow_html=True)
+# ---------------------------------------------------
+# HEADER
+# ---------------------------------------------------
+st.title("🏦 Enterprise Credit Risk Analytics")
+st.markdown(
+    "<div class='subtitle'>Advanced machine learning models for credit default prediction</div>",
+    unsafe_allow_html=True
+)
 
-# ---------------------------------------------------
-# Header
-# ---------------------------------------------------
-st.markdown("<div class='header-title'>🏦 Enterprise Credit Risk Analytics</div>", unsafe_allow_html=True)
-st.markdown("<div class='header-subtitle'>Advanced machine learning models for credit default prediction</div>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ---------------------------------------------------
 # 1️⃣ SAMPLE DATASET (FIRST)
 # ---------------------------------------------------
-st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
-st.markdown("<div class='section-title'>📥 Sample Dataset</div>", unsafe_allow_html=True)
+st.header("📥 Sample Dataset")
 
 with open("data/UCI_Credit_Card.csv", "rb") as file:
     st.download_button(
@@ -111,13 +116,12 @@ with open("data/UCI_Credit_Card.csv", "rb") as file:
         mime="text/csv"
     )
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ---------------------------------------------------
-# 2️⃣ MODEL CONFIGURATION + UPLOAD
+# 2️⃣ MODEL CONFIGURATION
 # ---------------------------------------------------
-st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
-st.markdown("<div class='section-title'>⚙ Model Configuration</div>", unsafe_allow_html=True)
+st.header("⚙️ Model Configuration")
 
 col1, col2 = st.columns(2)
 
@@ -140,8 +144,6 @@ with col2:
         type=["csv"]
     )
 
-st.markdown("</div>", unsafe_allow_html=True)
-
 # ---------------------------------------------------
 # Model Loader
 # ---------------------------------------------------
@@ -160,9 +162,10 @@ def load_model(name):
         return joblib.load("model/xgboost.pkl"), None
 
 # ---------------------------------------------------
-# Evaluation
+# MODEL EVALUATION
 # ---------------------------------------------------
 if uploaded_file is not None:
+
     df = pd.read_csv(uploaded_file)
 
     if "default.payment.next.month" not in df.columns:
@@ -186,15 +189,10 @@ if uploaded_file is not None:
         auc = roc_auc_score(y_true, y_prob)
         mcc = matthews_corrcoef(y_true, y_pred)
 
-        # ---------------------------------------------------
-        # Metrics
-        # ---------------------------------------------------
-        st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
-        st.markdown("<div class='section-title'>📊 Performance Metrics</div>", unsafe_allow_html=True)
+        st.markdown("---")
+        st.header("📊 Performance Metrics")
 
-        col1, col2, col3 = st.columns(3)
-
-        metric_data = [
+        metrics = [
             ("Accuracy", acc),
             ("Precision", prec),
             ("Recall", rec),
@@ -203,50 +201,57 @@ if uploaded_file is not None:
             ("MCC", mcc),
         ]
 
-        for col, (label, value) in zip([col1, col1, col2, col2, col3, col3], metric_data):
-            col.markdown(
-                f"""
-                <div class='metric-card'>
-                    <div class='metric-value'>{value:.4f}</div>
-                    <div class='metric-label'>{label}</div>
+        for i in range(0, 6, 3):
+            cols = st.columns(3)
+            for col, (label, value) in zip(cols, metrics[i:i+3]):
+                col.markdown(f"""
+                <div class="metric-card">
+                    <div class="metric-title">{label}</div>
+                    <div class="metric-value">{value:.4f}</div>
                 </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-        st.markdown("</div>", unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
 
         # ---------------------------------------------------
         # Confusion Matrix
         # ---------------------------------------------------
-        st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
-        st.markdown("<div class='section-title'>📈 Confusion Matrix</div>", unsafe_allow_html=True)
+        st.markdown("---")
+        st.header("📈 Confusion Matrix")
 
         cm = confusion_matrix(y_true, y_pred)
 
-        fig, ax = plt.subplots(figsize=(3.6, 3.6))
+        fig, ax = plt.subplots(figsize=(4, 4))
         sns.heatmap(
             cm,
             annot=True,
             fmt="d",
-            cmap="coolwarm",
+            cmap="Blues",
             cbar=False,
-            linewidths=0.5,
-            linecolor="#0f172a",
             square=True,
             ax=ax
         )
 
         ax.set_xlabel("Predicted")
         ax.set_ylabel("Actual")
+        ax.set_facecolor("#0f172a")
+        fig.patch.set_facecolor("#0f172a")
 
         st.pyplot(fig)
 
-        st.markdown("</div>", unsafe_allow_html=True)
+        # ---------------------------------------------------
+        # Summary Table
+        # ---------------------------------------------------
+        st.markdown("---")
+        st.header("📋 Model Summary")
+
+        summary_df = pd.DataFrame({
+            "Metric": ["Accuracy", "Precision", "Recall", "F1 Score", "AUC", "MCC"],
+            "Value": [acc, prec, rec, f1, auc, mcc]
+        })
+
+        st.dataframe(summary_df, use_container_width=True)
 
 # ---------------------------------------------------
-# Footer
+# FOOTER
 # ---------------------------------------------------
-st.markdown("<div class='footer'>Enterprise Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("---")
+st.caption("Enterprise Credit Risk Analytics Dashboard | Streamlit Deployment")
