@@ -169,4 +169,116 @@ st.markdown("<hr>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # MODEL CONFIGURATION
-# --------------------------------------
+# ---------------------------------------------------
+st.header("⚙️ Model Configuration")
+
+col1, col2 = st.columns(2, gap="large")
+
+with col1:
+    model_name = st.selectbox(
+        "Select Model",
+        [
+            "Logistic Regression",
+            "Decision Tree",
+            "KNN",
+            "Naive Bayes",
+            "Random Forest",
+            "XGBoost",
+        ]
+    )
+
+with col2:
+    uploaded_file = st.file_uploader(
+        "Upload Test CSV File",
+        type=["csv"]
+    )
+
+# ---------------------------------------------------
+# MODEL LOADER
+# ---------------------------------------------------
+def load_model(name):
+    if name == "Logistic Regression":
+        return joblib.load("model/logistic_regression.pkl"), joblib.load("model/scaler.pkl")
+    if name == "Decision Tree":
+        return joblib.load("model/decision_tree.pkl"), None
+    if name == "KNN":
+        return joblib.load("model/knn.pkl"), joblib.load("model/knn_scaler.pkl")
+    if name == "Naive Bayes":
+        return joblib.load("model/naive_bayes.pkl"), None
+    if name == "Random Forest":
+        return joblib.load("model/random_forest.pkl"), None
+    if name == "XGBoost":
+        return joblib.load("model/xgboost.pkl"), None
+
+# ---------------------------------------------------
+# EVALUATION
+# ---------------------------------------------------
+if uploaded_file is not None:
+
+    df = pd.read_csv(uploaded_file)
+
+    if "default.payment.next.month" not in df.columns:
+        st.error("Target column 'default.payment.next.month' not found.")
+    else:
+        y_true = df["default.payment.next.month"]
+        X = df.drop(columns=["default.payment.next.month", "ID"], errors="ignore")
+
+        model, scaler = load_model(model_name)
+
+        if scaler is not None:
+            X = scaler.transform(X)
+
+        y_pred = model.predict(X)
+        y_prob = model.predict_proba(X)[:, 1]
+
+        acc = accuracy_score(y_true, y_pred)
+        prec = precision_score(y_true, y_pred)
+        rec = recall_score(y_true, y_pred)
+        f1 = f1_score(y_true, y_pred)
+        auc = roc_auc_score(y_true, y_prob)
+        mcc = matthews_corrcoef(y_true, y_pred)
+
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.header("📊 Performance Metrics")
+
+        metrics = [
+            ("Accuracy", acc),
+            ("Precision", prec),
+            ("Recall", rec),
+            ("F1 Score", f1),
+            ("AUC", auc),
+            ("MCC", mcc),
+        ]
+
+        for i in range(0, 6, 3):
+            cols = st.columns(3, gap="medium")
+            for col, (label, value) in zip(cols, metrics[i:i+3]):
+                col.markdown(f"""
+                <div class="metric-card">
+                    <div class="metric-title">{label}</div>
+                    <div class="metric-value">{value:.4f}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.header("📈 Confusion Matrix")
+
+        cm = confusion_matrix(y_true, y_pred)
+
+        fig, ax = plt.subplots(figsize=(4, 4))
+        sns.heatmap(
+            cm,
+            annot=True,
+            fmt="d",
+            cmap="Blues",
+            cbar=False,
+            square=True,
+            ax=ax
+        )
+
+        ax.set_facecolor("#0b1220")
+        fig.patch.set_facecolor("#0b1220")
+
+        st.pyplot(fig)
+
+st.markdown("<div class='footer'>Enterprise Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
