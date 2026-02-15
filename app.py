@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from sklearn.metrics import (
     accuracy_score,
@@ -11,16 +13,70 @@ from sklearn.metrics import (
     matthews_corrcoef,
     confusion_matrix
 )
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-st.set_page_config(page_title="ML Assignment 2", layout="wide")
-st.title("Machine Learning Assignment 2 – Classification Models")
+# ---------------------------------------------------
+# Page Config
+# ---------------------------------------------------
+st.set_page_config(
+    page_title="Credit Risk Dashboard",
+    layout="wide",
+)
 
-# -------------------------------
-# Download Sample Dataset
-# -------------------------------
-st.subheader("Download Sample Dataset")
+# ---------------------------------------------------
+# Custom CSS – Professional Fintech Look
+# ---------------------------------------------------
+st.markdown("""
+<style>
+html, body, [class*="css"] {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.main-title {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.sub-title {
+    font-size: 16px;
+    color: #5f6368;
+    margin-bottom: 2rem;
+}
+
+/* Section headers */
+.section-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Divider */
+hr {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Sidebar */
+.css-1d391kg {
+    padding-top: 2rem;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------------------------------------------
+# Header Section
+# ---------------------------------------------------
+st.markdown("<div class='main-title'>💳 Credit Card Default Risk Analysis</div>", unsafe_allow_html=True)
+st.markdown("<div class='sub-title'>Comparative Evaluation of Machine Learning Models for Financial Risk Prediction</div>", unsafe_allow_html=True)
+
+st.markdown("<hr>", unsafe_allow_html=True)
+
+# ---------------------------------------------------
+# Dataset Download Section
+# ---------------------------------------------------
+st.markdown("<div class='section-title'>📥 Download Sample Dataset</div>", unsafe_allow_html=True)
 
 with open("data/UCI_Credit_Card.csv", "rb") as file:
     st.download_button(
@@ -30,34 +86,12 @@ with open("data/UCI_Credit_Card.csv", "rb") as file:
         mime="text/csv"
     )
 
+st.markdown("<hr>", unsafe_allow_html=True)
 
-st.write("Upload a CSV file and evaluate different trained models.")
-
-# -------------------------------
-# Model Loader
-# -------------------------------
-def load_model(model_name):
-    if model_name == "Logistic Regression":
-        model = joblib.load("model/logistic_regression.pkl")
-        scaler = joblib.load("model/scaler.pkl")
-        return model, scaler
-    elif model_name == "Decision Tree":
-        return joblib.load("model/decision_tree.pkl"), None
-    elif model_name == "KNN":
-        model = joblib.load("model/knn.pkl")
-        scaler = joblib.load("model/knn_scaler.pkl")
-        return model, scaler
-    elif model_name == "Naive Bayes":
-        return joblib.load("model/naive_bayes.pkl"), None
-    elif model_name == "Random Forest":
-        return joblib.load("model/random_forest.pkl"), None
-    elif model_name == "XGBoost":
-        return joblib.load("model/xgboost.pkl"), None
-
-# -------------------------------
-# Sidebar
-# -------------------------------
-st.sidebar.header("Model Selection")
+# ---------------------------------------------------
+# Sidebar - Model Selection
+# ---------------------------------------------------
+st.sidebar.title("🔎 Model Selection")
 
 model_name = st.sidebar.selectbox(
     "Choose a model",
@@ -71,11 +105,32 @@ model_name = st.sidebar.selectbox(
     ]
 )
 
-uploaded_file = st.file_uploader("Upload test CSV file", type=["csv"])
+# ---------------------------------------------------
+# Upload Section
+# ---------------------------------------------------
+st.markdown("<div class='section-title'>📂 Upload Test CSV File</div>", unsafe_allow_html=True)
+uploaded_file = st.file_uploader("", type=["csv"])
 
-# -------------------------------
+# ---------------------------------------------------
+# Model Loader
+# ---------------------------------------------------
+def load_model(name):
+    if name == "Logistic Regression":
+        return joblib.load("model/logistic_regression.pkl"), joblib.load("model/scaler.pkl")
+    if name == "Decision Tree":
+        return joblib.load("model/decision_tree.pkl"), None
+    if name == "KNN":
+        return joblib.load("model/knn.pkl"), joblib.load("model/knn_scaler.pkl")
+    if name == "Naive Bayes":
+        return joblib.load("model/naive_bayes.pkl"), None
+    if name == "Random Forest":
+        return joblib.load("model/random_forest.pkl"), None
+    if name == "XGBoost":
+        return joblib.load("model/xgboost.pkl"), None
+
+# ---------------------------------------------------
 # Main Logic
-# -------------------------------
+# ---------------------------------------------------
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
@@ -93,8 +148,11 @@ if uploaded_file is not None:
         y_pred = model.predict(X)
         y_prob = model.predict_proba(X)[:, 1]
 
-        # Metrics
-        st.subheader("Evaluation Metrics")
+        # ---------------------------------------------------
+        # Metrics Section
+        # ---------------------------------------------------
+        st.markdown("<div class='section-title'>📊 Evaluation Metrics</div>", unsafe_allow_html=True)
+
         col1, col2, col3 = st.columns(3)
 
         col1.metric("Accuracy", f"{accuracy_score(y_true, y_pred):.4f}")
@@ -106,12 +164,24 @@ if uploaded_file is not None:
         col3.metric("AUC", f"{roc_auc_score(y_true, y_prob):.4f}")
         col3.metric("MCC", f"{matthews_corrcoef(y_true, y_pred):.4f}")
 
-        # Confusion Matrix
-        st.subheader("Confusion Matrix")
+        # ---------------------------------------------------
+        # Confusion Matrix Section
+        # ---------------------------------------------------
+        st.markdown("<div class='section-title'>📈 Confusion Matrix</div>", unsafe_allow_html=True)
+
         cm = confusion_matrix(y_true, y_pred)
 
-        fig, ax = plt.subplots()
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax)
+        fig, ax = plt.subplots(figsize=(4, 4))
+        sns.heatmap(
+            cm,
+            annot=True,
+            fmt="d",
+            cmap="Blues",
+            cbar=False,
+            square=True,
+            ax=ax
+        )
         ax.set_xlabel("Predicted")
         ax.set_ylabel("Actual")
+
         st.pyplot(fig)
