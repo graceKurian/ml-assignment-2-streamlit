@@ -17,6 +17,20 @@ import seaborn as sns
 st.set_page_config(page_title="ML Assignment 2", layout="wide")
 st.title("Machine Learning Assignment 2 – Classification Models")
 
+# -------------------------------
+# Download Sample Dataset
+# -------------------------------
+st.subheader("Download Sample Dataset")
+
+with open("data/UCI_Credit_Card.csv", "rb") as file:
+    st.download_button(
+        label="Download Credit Card Dataset",
+        data=file,
+        file_name="UCI_Credit_Card.csv",
+        mime="text/csv"
+    )
+
+
 st.write("Upload a CSV file and evaluate different trained models.")
 
 # -------------------------------
