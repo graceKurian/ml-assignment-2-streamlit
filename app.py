@@ -23,21 +23,21 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# CLEAN ENTERPRISE DARK THEME (FIXED SPACING)
+# PREMIUM DARK ENTERPRISE THEME
 # ---------------------------------------------------
 st.markdown("""
 <style>
 
-/* Reduce default top padding */
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
-
 /* Background */
 .stApp {
     background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
-    color: #e5e7eb;
+    color: #f1f5f9;
+}
+
+/* Reduce extra padding */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 /* Headers */
@@ -45,12 +45,14 @@ h1 {
     font-size: 38px !important;
     font-weight: 700;
     margin-bottom: 0.5rem !important;
+    color: #ffffff !important;
 }
 
 h2 {
+    font-weight: 600 !important;
     margin-top: 2rem !important;
     margin-bottom: 1rem !important;
-    font-weight: 600;
+    color: #e2e8f0 !important;
 }
 
 /* Subtitle */
@@ -63,41 +65,57 @@ h2 {
 /* Divider */
 hr {
     border: 1px solid #1f2937;
-    margin: 1.5rem 0;
+    margin: 1.8rem 0;
 }
 
-/* SELECTBOX FIX */
+/* Selectbox */
 .stSelectbox > div > div {
     background-color: #1e293b !important;
-    color: white !important;
+    color: #ffffff !important;
     border-radius: 10px !important;
     border: 1px solid #334155 !important;
-    min-height: 50px !important;
-    display: flex !important;
-    align-items: center !important;
-    padding-left: 12px !important;
+    min-height: 52px !important;
+    padding-left: 14px !important;
 }
 
-/* Make dropdown arrow visible */
 .stSelectbox svg {
     fill: #60a5fa !important;
 }
 
-/* FILE UPLOADER FIX */
+/* File uploader container */
 .stFileUploader > div {
-    background-color: #1e293b !important;
+    background: linear-gradient(135deg, #1e293b, #1a2438);
     border: 2px dashed #3b82f6 !important;
-    border-radius: 12px !important;
-    padding: 20px !important;
+    border-radius: 14px !important;
+    padding: 28px !important;
+    transition: 0.3s ease;
 }
 
-/* Browse Button */
+/* File uploader label */
+.stFileUploader label {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #60a5fa !important;
+}
+
+/* Drag text */
+.stFileUploader div div span {
+    color: #cbd5e1 !important;
+    font-size: 14px !important;
+}
+
+/* Browse button */
 .stFileUploader button {
     background-color: #2563eb !important;
-    color: white !important;
+    color: #ffffff !important;
     border-radius: 8px !important;
     font-weight: 600 !important;
-    padding: 8px 16px !important;
+    padding: 10px 18px !important;
+}
+
+/* Uploaded file name */
+.stFileUploader small {
+    color: #94a3b8 !important;
 }
 
 /* Download button */
@@ -105,16 +123,16 @@ hr {
     background: linear-gradient(90deg, #10b981, #059669);
     color: white;
     border-radius: 10px;
-    padding: 10px 18px;
+    padding: 10px 20px;
     font-weight: 600;
     border: none;
 }
 
-/* METRIC CARDS */
+/* Metric cards */
 .metric-card {
     background-color: #1e293b;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 22px;
+    border-radius: 14px;
     text-align: center;
     border: 1px solid #334155;
 }
@@ -125,7 +143,7 @@ hr {
 }
 
 .metric-value {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 700;
     color: #60a5fa;
 }
@@ -188,8 +206,9 @@ with col1:
     )
 
 with col2:
+    st.markdown("### 📂 Upload Test CSV File")
     uploaded_file = st.file_uploader(
-        "Upload Test CSV File",
+        "",
         type=["csv"]
     )
 
@@ -251,7 +270,7 @@ if uploaded_file is not None:
         ]
 
         for i in range(0, 6, 3):
-            cols = st.columns(3, gap="medium")
+            cols = st.columns(3)
             for col, (label, value) in zip(cols, metrics[i:i+3]):
                 col.markdown(f"""
                 <div class="metric-card">
