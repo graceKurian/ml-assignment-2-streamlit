@@ -35,19 +35,19 @@ The following machine learning models are implemented and evaluated:
 Evaluation metrics include Accuracy, AUC, Precision, Recall, F1 Score, and Matthews
 Correlation Coefficient (MCC).
 
-## Model Comparison and Evaluation Metrics
-
+## 📊 Evaluation Metrics Comparison
 The following table compares the performance of all implemented classification models
 using standard evaluation metrics.
 
-| ML Model | Accuracy | AUC | Precision | Recall | F1 Score | MCC |
-|---------|----------|-----|-----------|--------|----------|-----|
-| Logistic Regression | 0.8077 | 0.7076 | 0.6868 | 0.2396 | 0.3553 | 0.3244 |
-| Decision Tree | 0.8107 | 0.7223 | 0.6265 | 0.3564 | 0.4544 | 0.3705 |
-| K-Nearest Neighbors | 0.7897 | 0.6999 | 0.5364 | 0.3610 | 0.4315 | 0.3176 |
-| Naive Bayes | 0.4160 | 0.6516 | 0.2496 | 0.8176 | 0.3824 | 0.1111 |
-| Random Forest (Ensemble) | 0.8162 | 0.7736 | 0.6618 | 0.3451 | 0.4537 | 0.3834 |
-| XGBoost (Ensemble) | 0.8180 | 0.7748 | 0.6607 | 0.3640 | 0.4694 | 0.3945 |
+| ML Model                  | Accuracy | AUC    | Precision | Recall | F1 Score | MCC    |
+|---------------------------|----------|--------|-----------|--------|----------|--------|
+| Logistic Regression       | 0.8110   | 0.7240 | 0.7098    | 0.2462 | 0.3656   | 0.3394 |
+| Decision Tree             | 0.8378   | 0.8029 | 0.7370    | 0.4150 | 0.5310   | 0.4687 |
+| K-Nearest Neighbors       | 0.9575   | 0.9675 | 0.9330    | 0.8704 | 0.9006   | 0.8745 |
+| Naive Bayes (Gaussian)    | 0.4216   | 0.6677 | 0.2539    | 0.8329 | 0.3892   | 0.1281 |
+| Random Forest             | 0.8655   | 0.8796 | 0.8533    | 0.4732 | 0.6088   | 0.5694 |
+| XGBoost                   | 0.8388   | 0.7442 | 0.7442    | 0.4135 | 0.5316   | 0.4717 |
+
 
 ## Model-wise Observations
 
