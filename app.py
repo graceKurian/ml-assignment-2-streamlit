@@ -20,7 +20,7 @@ from sklearn.metrics import (
 st.set_page_config(page_title="Enterprise Credit Risk Dashboard", layout="wide")
 
 # ---------------------------------------------------
-# Clean Dark Enterprise Theme (Refined)
+# Clean Enterprise Dark Theme (Subtle)
 # ---------------------------------------------------
 st.markdown("""
 <style>
@@ -30,12 +30,12 @@ body {
 }
 
 .main-container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: auto;
 }
 
 .header-title {
-    font-size: 36px;
+    font-size: 34px;
     font-weight: 700;
     margin-bottom: 4px;
 }
@@ -43,27 +43,34 @@ body {
 .header-subtitle {
     font-size: 15px;
     color: #94a3b8;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
-.section-box {
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.soft-box {
     background-color: #1e293b;
-    padding: 24px;
-    border-radius: 12px;
-    margin-bottom: 20px;
+    padding: 22px;
+    border-radius: 10px;
     border: 1px solid #334155;
+    margin-bottom: 25px;
 }
 
 .metric-card {
     background-color: #111827;
-    padding: 18px;
-    border-radius: 10px;
+    padding: 16px;
+    border-radius: 8px;
     text-align: center;
     border: 1px solid #334155;
 }
 
 .metric-value {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 600;
     color: #3b82f6;
 }
@@ -91,12 +98,28 @@ st.markdown("<div class='header-title'>🏦 Enterprise Credit Risk Analytics</di
 st.markdown("<div class='header-subtitle'>Advanced machine learning models for credit default prediction</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
-# Combined Control Panel (Model + Upload Together)
+# 1️⃣ SAMPLE DATASET (FIRST)
 # ---------------------------------------------------
-st.markdown("<div class='section-box'>", unsafe_allow_html=True)
-st.markdown("### 🔧 Model Configuration")
+st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
+st.markdown("<div class='section-title'>📥 Sample Dataset</div>", unsafe_allow_html=True)
 
-col1, col2 = st.columns([1, 1])
+with open("data/UCI_Credit_Card.csv", "rb") as file:
+    st.download_button(
+        label="Download Credit Card Dataset",
+        data=file,
+        file_name="UCI_Credit_Card.csv",
+        mime="text/csv"
+    )
+
+st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------------------------------------------------
+# 2️⃣ MODEL CONFIGURATION + UPLOAD
+# ---------------------------------------------------
+st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
+st.markdown("<div class='section-title'>⚙ Model Configuration</div>", unsafe_allow_html=True)
+
+col1, col2 = st.columns(2)
 
 with col1:
     model_name = st.selectbox(
@@ -120,22 +143,6 @@ with col2:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
-# Dataset Download (Subtle Section)
-# ---------------------------------------------------
-st.markdown("<div class='section-box'>", unsafe_allow_html=True)
-st.markdown("### 📥 Sample Dataset")
-
-with open("data/UCI_Credit_Card.csv", "rb") as file:
-    st.download_button(
-        label="Download Credit Card Dataset",
-        data=file,
-        file_name="UCI_Credit_Card.csv",
-        mime="text/csv"
-    )
-
-st.markdown("</div>", unsafe_allow_html=True)
-
-# ---------------------------------------------------
 # Model Loader
 # ---------------------------------------------------
 def load_model(name):
@@ -153,7 +160,7 @@ def load_model(name):
         return joblib.load("model/xgboost.pkl"), None
 
 # ---------------------------------------------------
-# Evaluation Logic
+# Evaluation
 # ---------------------------------------------------
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
@@ -182,8 +189,8 @@ if uploaded_file is not None:
         # ---------------------------------------------------
         # Metrics
         # ---------------------------------------------------
-        st.markdown("<div class='section-box'>", unsafe_allow_html=True)
-        st.markdown("### 📊 Performance Metrics")
+        st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'>📊 Performance Metrics</div>", unsafe_allow_html=True)
 
         col1, col2, col3 = st.columns(3)
 
@@ -212,12 +219,12 @@ if uploaded_file is not None:
         # ---------------------------------------------------
         # Confusion Matrix
         # ---------------------------------------------------
-        st.markdown("<div class='section-box'>", unsafe_allow_html=True)
-        st.markdown("### 📈 Confusion Matrix")
+        st.markdown("<div class='soft-box'>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'>📈 Confusion Matrix</div>", unsafe_allow_html=True)
 
         cm = confusion_matrix(y_true, y_pred)
 
-        fig, ax = plt.subplots(figsize=(3.8, 3.8))
+        fig, ax = plt.subplots(figsize=(3.6, 3.6))
         sns.heatmap(
             cm,
             annot=True,
