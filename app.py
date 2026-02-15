@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
+import time
 
 from sklearn.metrics import (
     accuracy_score,
@@ -23,7 +24,7 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# PREMIUM DARK ENTERPRISE THEME
+# ELITE DARK UI + STICKY HEADER
 # ---------------------------------------------------
 st.markdown("""
 <style>
@@ -34,118 +35,94 @@ st.markdown("""
     color: #f1f5f9;
 }
 
-/* Reduce extra padding */
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+/* Sticky Header */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(6px);
+    padding: 15px 0;
+    z-index: 999;
+    border-bottom: 1px solid #1f2937;
 }
 
-/* Headers */
-h1 {
-    font-size: 38px !important;
+/* Header Text */
+.main-title {
+    font-size: 32px;
     font-weight: 700;
-    margin-bottom: 0.5rem !important;
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
-h2 {
-    font-weight: 600 !important;
-    margin-top: 2rem !important;
-    margin-bottom: 1rem !important;
-    color: #e2e8f0 !important;
-}
-
-/* Subtitle */
 .subtitle {
     color: #94a3b8;
-    font-size: 15px;
-    margin-bottom: 1.5rem;
+    font-size: 14px;
 }
 
 /* Divider */
 hr {
     border: 1px solid #1f2937;
-    margin: 1.8rem 0;
+    margin: 2rem 0;
+}
+
+/* KPI STRIP */
+.kpi-card {
+    background: linear-gradient(135deg, #1e293b, #1a2438);
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #334155;
+    transition: 0.3s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    border-color: #3b82f6;
+}
+
+.kpi-label {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.kpi-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #60a5fa;
+}
+
+/* File uploader glow */
+.stFileUploader > div {
+    background: linear-gradient(135deg, #1e293b, #1a2438);
+    border: 2px dashed #3b82f6 !important;
+    border-radius: 16px !important;
+    padding: 30px !important;
+    transition: 0.3s ease;
+}
+
+.stFileUploader > div:hover {
+    box-shadow: 0 0 25px rgba(59,130,246,0.5);
+}
+
+/* Drag text */
+.stFileUploader div div span {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Limit text */
+.stFileUploader small {
+    font-size: 14px !important;
+    color: #94a3b8 !important;
 }
 
 /* Selectbox */
 .stSelectbox > div > div {
     background-color: #1e293b !important;
-    color: #ffffff !important;
+    color: white !important;
     border-radius: 10px !important;
     border: 1px solid #334155 !important;
-    min-height: 52px !important;
-    padding-left: 14px !important;
-}
-
-.stSelectbox svg {
-    fill: #60a5fa !important;
-}
-
-/* File uploader container */
-.stFileUploader > div {
-    background: linear-gradient(135deg, #1e293b, #1a2438);
-    border: 2px dashed #3b82f6 !important;
-    border-radius: 14px !important;
-    padding: 28px !important;
-    transition: 0.3s ease;
-}
-
-/* File uploader label */
-.stFileUploader label {
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    color: #60a5fa !important;
-}
-
-/* Drag text */
-.stFileUploader div div span {
-    color: #cbd5e1 !important;
-    font-size: 14px !important;
-}
-
-/* Browse button */
-.stFileUploader button {
-    background-color: #2563eb !important;
-    color: #ffffff !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    padding: 10px 18px !important;
-}
-
-/* Uploaded file name */
-.stFileUploader small {
-    color: #94a3b8 !important;
-}
-
-/* Download button */
-.stDownloadButton>button {
-    background: linear-gradient(90deg, #10b981, #059669);
-    color: white;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-weight: 600;
-    border: none;
-}
-
-/* Metric cards */
-.metric-card {
-    background-color: #1e293b;
-    padding: 22px;
-    border-radius: 14px;
-    text-align: center;
-    border: 1px solid #334155;
-}
-
-.metric-title {
-    font-size: 14px;
-    color: #94a3b8;
-}
-
-.metric-value {
-    font-size: 28px;
-    font-weight: 700;
-    color: #60a5fa;
+    min-height: 50px !important;
 }
 
 /* Footer */
@@ -160,13 +137,14 @@ hr {
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------
-# HEADER
+# STICKY HEADER
 # ---------------------------------------------------
-st.title("🏦 Enterprise Credit Risk Analytics")
-st.markdown(
-    "<div class='subtitle'>Advanced machine learning models for credit default prediction</div>",
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div class="sticky-header">
+    <div class="main-title">🏦 Enterprise Credit Risk Analytics</div>
+    <div class="subtitle">Advanced machine learning models for credit default prediction</div>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
@@ -190,7 +168,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # ---------------------------------------------------
 st.header("⚙️ Model Configuration")
 
-col1, col2 = st.columns(2, gap="large")
+col1, col2 = st.columns(2)
 
 with col1:
     model_name = st.selectbox(
@@ -207,10 +185,7 @@ with col1:
 
 with col2:
     st.markdown("### 📂 Upload Test CSV File")
-    uploaded_file = st.file_uploader(
-        "",
-        type=["csv"]
-    )
+    uploaded_file = st.file_uploader("", type=["csv"])
 
 # ---------------------------------------------------
 # MODEL LOADER
@@ -234,70 +209,77 @@ def load_model(name):
 # ---------------------------------------------------
 if uploaded_file is not None:
 
+    st.success("Evaluation Started ✔")
+
     df = pd.read_csv(uploaded_file)
 
-    if "default.payment.next.month" not in df.columns:
-        st.error("Target column 'default.payment.next.month' not found.")
-    else:
-        y_true = df["default.payment.next.month"]
-        X = df.drop(columns=["default.payment.next.month", "ID"], errors="ignore")
+    y_true = df["default.payment.next.month"]
+    X = df.drop(columns=["default.payment.next.month", "ID"], errors="ignore")
 
-        model, scaler = load_model(model_name)
+    model, scaler = load_model(model_name)
 
-        if scaler is not None:
-            X = scaler.transform(X)
+    if scaler is not None:
+        X = scaler.transform(X)
 
-        y_pred = model.predict(X)
-        y_prob = model.predict_proba(X)[:, 1]
+    y_pred = model.predict(X)
+    y_prob = model.predict_proba(X)[:, 1]
 
-        acc = accuracy_score(y_true, y_pred)
-        prec = precision_score(y_true, y_pred)
-        rec = recall_score(y_true, y_pred)
-        f1 = f1_score(y_true, y_pred)
-        auc = roc_auc_score(y_true, y_prob)
-        mcc = matthews_corrcoef(y_true, y_pred)
+    acc = accuracy_score(y_true, y_pred)
+    prec = precision_score(y_true, y_pred)
+    rec = recall_score(y_true, y_pred)
+    f1 = f1_score(y_true, y_pred)
+    auc = roc_auc_score(y_true, y_prob)
+    mcc = matthews_corrcoef(y_true, y_pred)
 
-        st.markdown("<hr>", unsafe_allow_html=True)
-        st.header("📊 Performance Metrics")
+    st.markdown("<hr>", unsafe_allow_html=True)
 
-        metrics = [
-            ("Accuracy", acc),
-            ("Precision", prec),
-            ("Recall", rec),
-            ("F1 Score", f1),
-            ("AUC", auc),
-            ("MCC", mcc),
-        ]
+    # ---------------------------------------------------
+    # KPI STRIP
+    # ---------------------------------------------------
+    st.header("📊 Key Performance Indicators")
 
-        for i in range(0, 6, 3):
-            cols = st.columns(3)
-            for col, (label, value) in zip(cols, metrics[i:i+3]):
-                col.markdown(f"""
-                <div class="metric-card">
-                    <div class="metric-title">{label}</div>
-                    <div class="metric-value">{value:.4f}</div>
-                </div>
-                """, unsafe_allow_html=True)
+    kpi_data = [
+        ("Accuracy", acc),
+        ("Precision", prec),
+        ("Recall", rec),
+        ("F1 Score", f1),
+        ("AUC", auc),
+        ("MCC", mcc),
+    ]
 
-        st.markdown("<hr>", unsafe_allow_html=True)
-        st.header("📈 Confusion Matrix")
+    cols = st.columns(6)
 
-        cm = confusion_matrix(y_true, y_pred)
+    for col, (label, value) in zip(cols, kpi_data):
+        col.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-label">{label}</div>
+            <div class="kpi-value">{value:.4f}</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-        fig, ax = plt.subplots(figsize=(4, 4))
-        sns.heatmap(
-            cm,
-            annot=True,
-            fmt="d",
-            cmap="Blues",
-            cbar=False,
-            square=True,
-            ax=ax
-        )
+    st.markdown("<hr>", unsafe_allow_html=True)
 
-        ax.set_facecolor("#0b1220")
-        fig.patch.set_facecolor("#0b1220")
+    # ---------------------------------------------------
+    # CONFUSION MATRIX
+    # ---------------------------------------------------
+    st.header("📈 Confusion Matrix")
 
-        st.pyplot(fig)
+    cm = confusion_matrix(y_true, y_pred)
+
+    fig, ax = plt.subplots(figsize=(4, 4))
+    sns.heatmap(
+        cm,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        cbar=False,
+        square=True,
+        ax=ax
+    )
+
+    ax.set_facecolor("#0b1220")
+    fig.patch.set_facecolor("#0b1220")
+
+    st.pyplot(fig)
 
 st.markdown("<div class='footer'>Enterprise Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
