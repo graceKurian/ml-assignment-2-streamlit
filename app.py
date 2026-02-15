@@ -211,7 +211,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # ---------------------------------------------------
 st.header("📥 Sample Dataset")
 
-with open("data/UCI_Credit_Card.csv", "rb") as file:
+with open("data/test_data.csv", "rb") as file:
     st.download_button(
         label="Download Credit Card Dataset",
         data=file,
