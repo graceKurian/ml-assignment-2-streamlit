@@ -213,9 +213,9 @@ st.header("📥 Sample Dataset")
 
 with open("data/test_data.csv", "rb") as file:
     st.download_button(
-        label="Download Credit Card Dataset",
+        label="Download Credit Card Test Dataset",
         data=file,
-        file_name="UCI_Credit_Card.csv",
+        file_name="test_data.csv",
         mime="text/csv"
     )
 
