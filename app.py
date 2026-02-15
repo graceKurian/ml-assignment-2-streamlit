@@ -23,31 +23,33 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# ENHANCED DARK THEME (Professional Fintech Look)
+# PROFESSIONAL DARK THEME WITH STRONG VISIBILITY
 # ---------------------------------------------------
 st.markdown("""
 <style>
 
 /* Background */
 .stApp {
-    background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+    background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
     color: #e5e7eb;
 }
 
 /* Headers */
 h1 {
-    font-size: 40px !important;
+    font-size: 42px !important;
     font-weight: 700;
+    color: #ffffff !important;
 }
 h2 {
-    margin-top: 40px !important;
+    margin-top: 45px !important;
+    color: #f1f5f9 !important;
 }
 
 /* Subtitle */
 .subtitle {
-    color: #9ca3af;
+    color: #94a3b8;
     font-size: 16px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 /* Divider */
@@ -55,27 +57,46 @@ hr {
     border: 1px solid #1f2937;
 }
 
-/* Primary Buttons */
-.stButton>button {
-    background: linear-gradient(90deg, #2563eb, #1d4ed8);
-    color: white;
-    border-radius: 8px;
-    padding: 10px 18px;
-    font-weight: 600;
-    border: none;
-    transition: 0.3s ease;
+/* Selectbox Container */
+.stSelectbox > div > div {
+    background-color: #1e293b !important;
+    color: white !important;
+    border-radius: 10px !important;
+    border: 1px solid #334155 !important;
+    padding: 6px;
 }
 
-.stButton>button:hover {
-    background: linear-gradient(90deg, #1d4ed8, #1e40af);
-    transform: translateY(-2px);
+/* Dropdown arrow visibility */
+.stSelectbox svg {
+    fill: #60a5fa !important;
+    transform: scale(1.2);
+}
+
+/* File uploader container */
+.stFileUploader > div {
+    background-color: #1e293b !important;
+    border: 2px dashed #3b82f6 !important;
+    border-radius: 12px !important;
+    padding: 15px !important;
+}
+
+/* Browse Files button */
+.stFileUploader button {
+    background-color: #2563eb !important;
+    color: white !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+.stFileUploader button:hover {
+    background-color: #1d4ed8 !important;
 }
 
 /* Download button */
 .stDownloadButton>button {
     background: linear-gradient(90deg, #10b981, #059669);
     color: white;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 10px 18px;
     font-weight: 600;
     border: none;
@@ -85,43 +106,28 @@ hr {
     background: linear-gradient(90deg, #059669, #047857);
 }
 
-/* Selectbox */
-.stSelectbox > div > div {
-    background-color: #1f2937;
-    color: white;
-    border-radius: 8px;
-}
-
-/* File uploader */
-.stFileUploader > div {
-    background-color: #1f2937;
-    color: white;
-    border-radius: 8px;
-    border: 1px solid #374151;
-}
-
 /* Metric Cards */
 .metric-card {
-    background-color: #1f2937;
-    padding: 22px;
-    border-radius: 12px;
+    background-color: #1e293b;
+    padding: 24px;
+    border-radius: 14px;
     text-align: center;
-    border: 1px solid #374151;
+    border: 1px solid #334155;
     transition: 0.3s ease;
 }
 
 .metric-card:hover {
     transform: translateY(-4px);
-    border-color: #2563eb;
+    border-color: #3b82f6;
 }
 
 .metric-title {
     font-size: 14px;
-    color: #9ca3af;
+    color: #94a3b8;
 }
 
 .metric-value {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
     color: #60a5fa;
 }
@@ -129,9 +135,9 @@ hr {
 /* Footer */
 .footer {
     text-align: center;
-    color: #6b7280;
+    color: #64748b;
     font-size: 13px;
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
 </style>
@@ -149,7 +155,7 @@ st.markdown(
 st.markdown("---")
 
 # ---------------------------------------------------
-# SAMPLE DATASET FIRST
+# SAMPLE DATASET
 # ---------------------------------------------------
 st.header("📥 Sample Dataset")
 
@@ -272,22 +278,9 @@ if uploaded_file is not None:
             ax=ax
         )
 
-        ax.set_facecolor("#0f172a")
-        fig.patch.set_facecolor("#0f172a")
+        ax.set_facecolor("#0b1220")
+        fig.patch.set_facecolor("#0b1220")
 
         st.pyplot(fig)
 
-        st.markdown("---")
-        st.header("📋 Model Summary")
-
-        summary_df = pd.DataFrame({
-            "Metric": ["Accuracy", "Precision", "Recall", "F1 Score", "AUC", "MCC"],
-            "Value": [acc, prec, rec, f1, auc, mcc]
-        })
-
-        st.dataframe(summary_df, use_container_width=True)
-
-# ---------------------------------------------------
-# FOOTER
-# ---------------------------------------------------
-st.markdown("<div class='footer'>Enterprise Credit Risk Analytics Platform | Streamlit Deployment</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer'>Enterprise Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
