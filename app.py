@@ -15,7 +15,7 @@ from sklearn.metrics import (
 )
 
 # ---------------------------------------------------
-# Page Config
+# Page Configuration
 # ---------------------------------------------------
 st.set_page_config(
     page_title="Credit Risk Dashboard",
@@ -23,12 +23,21 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# Custom CSS – Professional Fintech Look
+# Professional Dashboard Styling
 # ---------------------------------------------------
 st.markdown("""
 <style>
-html, body, [class*="css"] {
+html, body, [class*="css"]  {
     font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f4f6f9;
+}
+
+/* Main container padding */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
 }
 
 /* Header */
@@ -44,21 +53,32 @@ html, body, [class*="css"] {
     margin-bottom: 2rem;
 }
 
-/* Section headers */
+/* Section Titles */
 .section-title {
     font-size: 22px;
     font-weight: 600;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     margin-bottom: 1rem;
 }
 
-/* Divider */
-hr {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+/* Card container */
+.section-card {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
 }
 
-/* Sidebar */
+/* Metric boxes */
+[data-testid="metric-container"] {
+    background-color: #f9fafc;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #e6e9ef;
+}
+
+/* Sidebar spacing */
 .css-1d391kg {
     padding-top: 2rem;
 }
@@ -70,23 +90,7 @@ hr {
 # ---------------------------------------------------
 st.markdown("<div class='main-title'>💳 Credit Card Default Risk Analysis</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>Comparative Evaluation of Machine Learning Models for Financial Risk Prediction</div>", unsafe_allow_html=True)
-
-st.markdown("<hr>", unsafe_allow_html=True)
-
-# ---------------------------------------------------
-# Dataset Download Section
-# ---------------------------------------------------
-st.markdown("<div class='section-title'>📥 Download Sample Dataset</div>", unsafe_allow_html=True)
-
-with open("data/UCI_Credit_Card.csv", "rb") as file:
-    st.download_button(
-        label="Download Credit Card Dataset",
-        data=file,
-        file_name="UCI_Credit_Card.csv",
-        mime="text/csv"
-    )
-
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ---------------------------------------------------
 # Sidebar - Model Selection
@@ -105,11 +109,43 @@ model_name = st.sidebar.selectbox(
     ]
 )
 
+model_descriptions = {
+    "Logistic Regression": "Linear baseline classifier suitable for interpretable financial modeling.",
+    "Decision Tree": "Tree-based model capturing non-linear decision boundaries.",
+    "KNN": "Distance-based classifier sensitive to feature scaling.",
+    "Naive Bayes": "Probabilistic classifier assuming conditional independence of features.",
+    "Random Forest": "Ensemble model improving stability and reducing overfitting.",
+    "XGBoost": "Gradient boosting model optimized for high predictive performance."
+}
+
+st.sidebar.markdown("### Model Information")
+st.sidebar.info(model_descriptions[model_name])
+
+# ---------------------------------------------------
+# Dataset Download Section
+# ---------------------------------------------------
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+st.markdown("<div class='section-title'>📥 Download Sample Dataset</div>", unsafe_allow_html=True)
+
+with open("data/UCI_Credit_Card.csv", "rb") as file:
+    st.download_button(
+        label="Download Credit Card Dataset",
+        data=file,
+        file_name="UCI_Credit_Card.csv",
+        mime="text/csv"
+    )
+
+st.markdown("</div>", unsafe_allow_html=True)
+
 # ---------------------------------------------------
 # Upload Section
 # ---------------------------------------------------
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
 st.markdown("<div class='section-title'>📂 Upload Test CSV File</div>", unsafe_allow_html=True)
+
 uploaded_file = st.file_uploader("", type=["csv"])
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # Model Loader
@@ -151,6 +187,7 @@ if uploaded_file is not None:
         # ---------------------------------------------------
         # Metrics Section
         # ---------------------------------------------------
+        st.markdown("<div class='section-card'>", unsafe_allow_html=True)
         st.markdown("<div class='section-title'>📊 Evaluation Metrics</div>", unsafe_allow_html=True)
 
         col1, col2, col3 = st.columns(3)
@@ -164,9 +201,12 @@ if uploaded_file is not None:
         col3.metric("AUC", f"{roc_auc_score(y_true, y_prob):.4f}")
         col3.metric("MCC", f"{matthews_corrcoef(y_true, y_pred):.4f}")
 
+        st.markdown("</div>", unsafe_allow_html=True)
+
         # ---------------------------------------------------
-        # Confusion Matrix Section
+        # Confusion Matrix
         # ---------------------------------------------------
+        st.markdown("<div class='section-card'>", unsafe_allow_html=True)
         st.markdown("<div class='section-title'>📈 Confusion Matrix</div>", unsafe_allow_html=True)
 
         cm = confusion_matrix(y_true, y_pred)
@@ -178,6 +218,8 @@ if uploaded_file is not None:
             fmt="d",
             cmap="Blues",
             cbar=False,
+            linewidths=1,
+            linecolor="white",
             square=True,
             ax=ax
         )
@@ -185,3 +227,16 @@ if uploaded_file is not None:
         ax.set_ylabel("Actual")
 
         st.pyplot(fig)
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------------------------------------------------
+# Footer
+# ---------------------------------------------------
+st.markdown("---")
+st.markdown(
+    "<div style='text-align:center; font-size:14px; color:gray;'>"
+    "Credit Risk Prediction Dashboard | Built with Streamlit & Scikit-learn"
+    "</div>",
+    unsafe_allow_html=True
+)
