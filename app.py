@@ -15,7 +15,7 @@ from sklearn.metrics import (
 )
 
 # ---------------------------------------------------
-# Page Config
+# PAGE CONFIG
 # ---------------------------------------------------
 st.set_page_config(
     page_title="Enterprise Credit Risk Analytics",
@@ -23,53 +23,96 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# GLOBAL DARK THEME
+# ENHANCED DARK THEME (Professional Fintech Look)
 # ---------------------------------------------------
 st.markdown("""
 <style>
 
-/* Main background */
+/* Background */
 .stApp {
-    background-color: #0f172a;
-    color: #e2e8f0;
+    background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+    color: #e5e7eb;
 }
 
 /* Headers */
-h1, h2, h3 {
-    color: #f8fafc !important;
+h1 {
+    font-size: 40px !important;
+    font-weight: 700;
+}
+h2 {
+    margin-top: 40px !important;
 }
 
-/* Subtext */
+/* Subtitle */
 .subtitle {
-    color: #94a3b8;
-    font-size: 15px;
+    color: #9ca3af;
+    font-size: 16px;
     margin-bottom: 25px;
 }
 
 /* Divider */
 hr {
-    border: 1px solid #1e293b;
+    border: 1px solid #1f2937;
 }
 
-/* Selectbox styling */
+/* Primary Buttons */
+.stButton>button {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-weight: 600;
+    border: none;
+    transition: 0.3s ease;
+}
+
+.stButton>button:hover {
+    background: linear-gradient(90deg, #1d4ed8, #1e40af);
+    transform: translateY(-2px);
+}
+
+/* Download button */
+.stDownloadButton>button {
+    background: linear-gradient(90deg, #10b981, #059669);
+    color: white;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-weight: 600;
+    border: none;
+}
+
+.stDownloadButton>button:hover {
+    background: linear-gradient(90deg, #059669, #047857);
+}
+
+/* Selectbox */
 .stSelectbox > div > div {
-    background-color: #1e293b;
+    background-color: #1f2937;
     color: white;
+    border-radius: 8px;
 }
 
-/* File uploader styling */
+/* File uploader */
 .stFileUploader > div {
-    background-color: #1e293b;
+    background-color: #1f2937;
     color: white;
+    border-radius: 8px;
+    border: 1px solid #374151;
 }
 
-/* Metric cards */
+/* Metric Cards */
 .metric-card {
-    background-color: #111827;
-    padding: 20px;
+    background-color: #1f2937;
+    padding: 22px;
     border-radius: 12px;
     text-align: center;
-    border: 1px solid #1f2937;
+    border: 1px solid #374151;
+    transition: 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    border-color: #2563eb;
 }
 
 .metric-title {
@@ -78,15 +121,17 @@ hr {
 }
 
 .metric-value {
-    font-size: 26px;
-    font-weight: 600;
-    color: #3b82f6;
+    font-size: 28px;
+    font-weight: 700;
+    color: #60a5fa;
 }
 
-/* Dataframe dark tweak */
-[data-testid="stDataFrame"] {
-    background-color: #111827;
-    color: white;
+/* Footer */
+.footer {
+    text-align: center;
+    color: #6b7280;
+    font-size: 13px;
+    margin-top: 40px;
 }
 
 </style>
@@ -104,7 +149,7 @@ st.markdown(
 st.markdown("---")
 
 # ---------------------------------------------------
-# 1️⃣ SAMPLE DATASET (FIRST)
+# SAMPLE DATASET FIRST
 # ---------------------------------------------------
 st.header("📥 Sample Dataset")
 
@@ -119,7 +164,7 @@ with open("data/UCI_Credit_Card.csv", "rb") as file:
 st.markdown("---")
 
 # ---------------------------------------------------
-# 2️⃣ MODEL CONFIGURATION
+# MODEL CONFIGURATION
 # ---------------------------------------------------
 st.header("⚙️ Model Configuration")
 
@@ -145,7 +190,7 @@ with col2:
     )
 
 # ---------------------------------------------------
-# Model Loader
+# MODEL LOADER
 # ---------------------------------------------------
 def load_model(name):
     if name == "Logistic Regression":
@@ -162,7 +207,7 @@ def load_model(name):
         return joblib.load("model/xgboost.pkl"), None
 
 # ---------------------------------------------------
-# MODEL EVALUATION
+# EVALUATION
 # ---------------------------------------------------
 if uploaded_file is not None:
 
@@ -211,9 +256,6 @@ if uploaded_file is not None:
                 </div>
                 """, unsafe_allow_html=True)
 
-        # ---------------------------------------------------
-        # Confusion Matrix
-        # ---------------------------------------------------
         st.markdown("---")
         st.header("📈 Confusion Matrix")
 
@@ -230,16 +272,11 @@ if uploaded_file is not None:
             ax=ax
         )
 
-        ax.set_xlabel("Predicted")
-        ax.set_ylabel("Actual")
         ax.set_facecolor("#0f172a")
         fig.patch.set_facecolor("#0f172a")
 
         st.pyplot(fig)
 
-        # ---------------------------------------------------
-        # Summary Table
-        # ---------------------------------------------------
         st.markdown("---")
         st.header("📋 Model Summary")
 
@@ -253,5 +290,4 @@ if uploaded_file is not None:
 # ---------------------------------------------------
 # FOOTER
 # ---------------------------------------------------
-st.markdown("---")
-st.caption("Enterprise Credit Risk Analytics Dashboard | Streamlit Deployment")
+st.markdown("<div class='footer'>Enterprise Credit Risk Analytics Platform | Streamlit Deployment</div>", unsafe_allow_html=True)
