@@ -3,7 +3,6 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
-import time
 
 from sklearn.metrics import (
     accuracy_score,
@@ -24,7 +23,7 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# ELITE DARK UI + STICKY HEADER
+# HIGH-CONTRAST ENTERPRISE DARK UI
 # ---------------------------------------------------
 st.markdown("""
 <style>
@@ -32,30 +31,12 @@ st.markdown("""
 /* Background */
 .stApp {
     background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
-    color: #f1f5f9;
+    color: #f8fafc;
 }
 
-/* Sticky Header */
-.sticky-header {
-    position: sticky;
-    top: 0;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(6px);
-    padding: 15px 0;
-    z-index: 999;
-    border-bottom: 1px solid #1f2937;
-}
-
-/* Header Text */
-.main-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.subtitle {
-    color: #94a3b8;
-    font-size: 14px;
+/* Headers */
+h1, h2 {
+    color: #ffffff !important;
 }
 
 /* Divider */
@@ -64,19 +45,88 @@ hr {
     margin: 2rem 0;
 }
 
-/* KPI STRIP */
-.kpi-card {
-    background: linear-gradient(135deg, #1e293b, #1a2438);
-    padding: 18px;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #334155;
-    transition: 0.3s ease;
+/* ===========================
+   DOWNLOAD BUTTON (GREEN)
+   =========================== */
+.stDownloadButton > button {
+    background: linear-gradient(90deg, #22c55e, #16a34a) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 12px 22px !important;
+    border: none !important;
+    font-size: 15px !important;
 }
 
-.kpi-card:hover {
-    transform: translateY(-4px);
-    border-color: #3b82f6;
+.stDownloadButton > button:hover {
+    background: linear-gradient(90deg, #16a34a, #15803d) !important;
+}
+
+/* ===========================
+   FILE UPLOADER BOX
+   =========================== */
+.stFileUploader > div {
+    background: #111827 !important;
+    border: 2px solid #3b82f6 !important;
+    border-radius: 16px !important;
+    padding: 30px !important;
+}
+
+/* Drag & Drop Main Text */
+.stFileUploader div div span {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+}
+
+/* Limit text */
+.stFileUploader small {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #93c5fd !important;
+}
+
+/* Browse Files Button */
+.stFileUploader button {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 10px 22px !important;
+    font-size: 14px !important;
+}
+
+.stFileUploader button:hover {
+    background: linear-gradient(90deg, #1d4ed8, #1e40af) !important;
+}
+
+/* Uploaded filename */
+.uploaded-file {
+    background-color: #1e293b;
+    color: #22c55e;
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: 600;
+    border: 1px solid #334155;
+}
+
+/* Selectbox */
+.stSelectbox > div > div {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    border: 1px solid #334155 !important;
+    min-height: 52px !important;
+}
+
+/* KPI Cards */
+.kpi-card {
+    background-color: #1e293b;
+    padding: 22px;
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid #334155;
 }
 
 .kpi-label {
@@ -85,47 +135,11 @@ hr {
 }
 
 .kpi-value {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     color: #60a5fa;
 }
 
-/* File uploader glow */
-.stFileUploader > div {
-    background: linear-gradient(135deg, #1e293b, #1a2438);
-    border: 2px dashed #3b82f6 !important;
-    border-radius: 16px !important;
-    padding: 30px !important;
-    transition: 0.3s ease;
-}
-
-.stFileUploader > div:hover {
-    box-shadow: 0 0 25px rgba(59,130,246,0.5);
-}
-
-/* Drag text */
-.stFileUploader div div span {
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    color: #e2e8f0 !important;
-}
-
-/* Limit text */
-.stFileUploader small {
-    font-size: 14px !important;
-    color: #94a3b8 !important;
-}
-
-/* Selectbox */
-.stSelectbox > div > div {
-    background-color: #1e293b !important;
-    color: white !important;
-    border-radius: 10px !important;
-    border: 1px solid #334155 !important;
-    min-height: 50px !important;
-}
-
-/* Footer */
 .footer {
     text-align: center;
     color: #64748b;
@@ -137,14 +151,9 @@ hr {
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------
-# STICKY HEADER
+# HEADER
 # ---------------------------------------------------
-st.markdown("""
-<div class="sticky-header">
-    <div class="main-title">🏦 Enterprise Credit Risk Analytics</div>
-    <div class="subtitle">Advanced machine learning models for credit default prediction</div>
-</div>
-""", unsafe_allow_html=True)
+st.title("🏦 Enterprise Credit Risk Analytics")
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
@@ -187,6 +196,12 @@ with col2:
     st.markdown("### 📂 Upload Test CSV File")
     uploaded_file = st.file_uploader("", type=["csv"])
 
+    if uploaded_file is not None:
+        st.markdown(
+            f"<div class='uploaded-file'>✔ Uploaded: {uploaded_file.name}</div>",
+            unsafe_allow_html=True
+        )
+
 # ---------------------------------------------------
 # MODEL LOADER
 # ---------------------------------------------------
@@ -209,8 +224,6 @@ def load_model(name):
 # ---------------------------------------------------
 if uploaded_file is not None:
 
-    st.success("Evaluation Started ✔")
-
     df = pd.read_csv(uploaded_file)
 
     y_true = df["default.payment.next.month"]
@@ -232,10 +245,6 @@ if uploaded_file is not None:
     mcc = matthews_corrcoef(y_true, y_pred)
 
     st.markdown("<hr>", unsafe_allow_html=True)
-
-    # ---------------------------------------------------
-    # KPI STRIP
-    # ---------------------------------------------------
     st.header("📊 Key Performance Indicators")
 
     kpi_data = [
@@ -258,10 +267,6 @@ if uploaded_file is not None:
         """, unsafe_allow_html=True)
 
     st.markdown("<hr>", unsafe_allow_html=True)
-
-    # ---------------------------------------------------
-    # CONFUSION MATRIX
-    # ---------------------------------------------------
     st.header("📈 Confusion Matrix")
 
     cm = confusion_matrix(y_true, y_pred)
