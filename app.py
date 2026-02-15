@@ -23,123 +23,137 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# HIGH-CONTRAST ENTERPRISE DARK UI
+# ULTRA PREMIUM DARK THEME
 # ---------------------------------------------------
 st.markdown("""
 <style>
 
 /* Background */
 .stApp {
-    background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
-    color: #f8fafc;
+    background: radial-gradient(circle at top left, #0f172a, #020617);
+    color: #ffffff;
 }
 
-/* Headers */
-h1, h2 {
-    color: #ffffff !important;
+/* Sticky Header */
+header {
+    visibility: hidden;
+}
+
+/* Container spacing */
+.block-container {
+    padding-top: 2rem;
+}
+
+/* Titles */
+h1 {
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px;
+}
+
+h2 {
+    margin-top: 2rem !important;
+    font-weight: 600 !important;
+}
+
+/* Glass panels */
+.glass {
+    background: rgba(30, 41, 59, 0.55);
+    backdrop-filter: blur(12px);
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    margin-bottom: 30px;
 }
 
 /* Divider */
 hr {
-    border: 1px solid #1f2937;
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #334155, transparent);
     margin: 2rem 0;
 }
 
-/* ===========================
-   DOWNLOAD BUTTON (GREEN)
-   =========================== */
-.stDownloadButton > button {
-    background: linear-gradient(90deg, #22c55e, #16a34a) !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    border-radius: 10px !important;
-    padding: 12px 22px !important;
-    border: none !important;
-    font-size: 15px !important;
-}
-
-.stDownloadButton > button:hover {
-    background: linear-gradient(90deg, #16a34a, #15803d) !important;
-}
-
-/* ===========================
-   FILE UPLOADER BOX
-   =========================== */
-.stFileUploader > div {
-    background: #111827 !important;
-    border: 2px solid #3b82f6 !important;
-    border-radius: 16px !important;
-    padding: 30px !important;
-}
-
-/* Drag & Drop Main Text */
-.stFileUploader div div span {
-    font-size: 18px !important;
-    font-weight: 700 !important;
-    color: #ffffff !important;
-}
-
-/* Limit text */
-.stFileUploader small {
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    color: #93c5fd !important;
-}
-
-/* Browse Files Button */
-.stFileUploader button {
-    background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    border-radius: 10px !important;
-    padding: 10px 22px !important;
-    font-size: 14px !important;
-}
-
-.stFileUploader button:hover {
-    background: linear-gradient(90deg, #1d4ed8, #1e40af) !important;
-}
-
-/* Uploaded filename */
-.uploaded-file {
-    background-color: #1e293b;
-    color: #22c55e;
-    padding: 8px 14px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-weight: 600;
-    border: 1px solid #334155;
-}
-
-/* Selectbox */
+/* SELECTBOX */
 .stSelectbox > div > div {
     background-color: #1e293b !important;
     color: #ffffff !important;
-    border-radius: 10px !important;
-    border: 1px solid #334155 !important;
+    border-radius: 12px !important;
+    border: 2px solid #3b82f6 !important;
     min-height: 52px !important;
+    font-weight: 600 !important;
+}
+
+.stSelectbox svg {
+    fill: #60a5fa !important;
+    width: 18px !important;
+}
+
+/* FILE UPLOADER */
+.stFileUploader > div {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 2px dashed #3b82f6 !important;
+    border-radius: 14px !important;
+    padding: 24px !important;
+}
+
+.stFileUploader label {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.stFileUploader button {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+}
+
+.stFileUploader small {
+    color: #38bdf8 !important;
+    font-weight: 600 !important;
+}
+
+/* Download button */
+.stDownloadButton>button {
+    background: linear-gradient(90deg, #10b981, #059669);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 4px 15px rgba(16,185,129,0.4);
 }
 
 /* KPI Cards */
-.kpi-card {
-    background-color: #1e293b;
-    padding: 22px;
+.metric-card {
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    padding: 20px;
     border-radius: 14px;
     text-align: center;
     border: 1px solid #334155;
+    transition: 0.3s ease;
 }
 
-.kpi-label {
-    font-size: 13px;
+.metric-card:hover {
+    transform: translateY(-6px);
+    border-color: #3b82f6;
+    box-shadow: 0 0 20px rgba(59,130,246,0.4);
+}
+
+.metric-title {
+    font-size: 14px;
     color: #94a3b8;
 }
 
-.kpi-value {
-    font-size: 24px;
-    font-weight: 700;
+.metric-value {
+    font-size: 28px;
+    font-weight: 800;
     color: #60a5fa;
 }
 
+/* Footer */
 .footer {
     text-align: center;
     color: #64748b;
@@ -154,13 +168,18 @@ hr {
 # HEADER
 # ---------------------------------------------------
 st.title("🏦 Enterprise Credit Risk Analytics")
+st.markdown(
+    "<div style='color:#cbd5e1; font-size:17px;'>Advanced AI Models for Credit Default Risk Prediction</div>",
+    unsafe_allow_html=True
+)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
-# SAMPLE DATASET
+# SAMPLE DATASET PANEL
 # ---------------------------------------------------
-st.header("📥 Sample Dataset")
+st.markdown("<div class='glass'>", unsafe_allow_html=True)
+st.subheader("📥 Sample Dataset")
 
 with open("data/UCI_Credit_Card.csv", "rb") as file:
     st.download_button(
@@ -170,14 +189,15 @@ with open("data/UCI_Credit_Card.csv", "rb") as file:
         mime="text/csv"
     )
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
-# MODEL CONFIGURATION
+# MODEL CONFIGURATION PANEL
 # ---------------------------------------------------
-st.header("⚙️ Model Configuration")
+st.markdown("<div class='glass'>", unsafe_allow_html=True)
+st.subheader("⚙️ Model Configuration")
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns(2, gap="large")
 
 with col1:
     model_name = st.selectbox(
@@ -193,14 +213,12 @@ with col1:
     )
 
 with col2:
-    st.markdown("### 📂 Upload Test CSV File")
-    uploaded_file = st.file_uploader("", type=["csv"])
+    uploaded_file = st.file_uploader(
+        "📂 Upload Test CSV File",
+        type=["csv"]
+    )
 
-    if uploaded_file is not None:
-        st.markdown(
-            f"<div class='uploaded-file'>✔ Uploaded: {uploaded_file.name}</div>",
-            unsafe_allow_html=True
-        )
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # MODEL LOADER
@@ -226,65 +244,62 @@ if uploaded_file is not None:
 
     df = pd.read_csv(uploaded_file)
 
-    y_true = df["default.payment.next.month"]
-    X = df.drop(columns=["default.payment.next.month", "ID"], errors="ignore")
+    if "default.payment.next.month" not in df.columns:
+        st.error("Target column missing.")
+    else:
+        y_true = df["default.payment.next.month"]
+        X = df.drop(columns=["default.payment.next.month", "ID"], errors="ignore")
 
-    model, scaler = load_model(model_name)
+        model, scaler = load_model(model_name)
 
-    if scaler is not None:
-        X = scaler.transform(X)
+        if scaler is not None:
+            X = scaler.transform(X)
 
-    y_pred = model.predict(X)
-    y_prob = model.predict_proba(X)[:, 1]
+        y_pred = model.predict(X)
+        y_prob = model.predict_proba(X)[:, 1]
 
-    acc = accuracy_score(y_true, y_pred)
-    prec = precision_score(y_true, y_pred)
-    rec = recall_score(y_true, y_pred)
-    f1 = f1_score(y_true, y_pred)
-    auc = roc_auc_score(y_true, y_prob)
-    mcc = matthews_corrcoef(y_true, y_pred)
+        acc = accuracy_score(y_true, y_pred)
+        prec = precision_score(y_true, y_pred)
+        rec = recall_score(y_true, y_pred)
+        f1 = f1_score(y_true, y_pred)
+        auc = roc_auc_score(y_true, y_prob)
+        mcc = matthews_corrcoef(y_true, y_pred)
 
-    st.markdown("<hr>", unsafe_allow_html=True)
-    st.header("📊 Key Performance Indicators")
+        st.markdown("<div class='glass'>", unsafe_allow_html=True)
+        st.subheader("📊 Performance Metrics")
 
-    kpi_data = [
-        ("Accuracy", acc),
-        ("Precision", prec),
-        ("Recall", rec),
-        ("F1 Score", f1),
-        ("AUC", auc),
-        ("MCC", mcc),
-    ]
+        metrics = [
+            ("Accuracy", acc),
+            ("Precision", prec),
+            ("Recall", rec),
+            ("F1 Score", f1),
+            ("AUC", auc),
+            ("MCC", mcc),
+        ]
 
-    cols = st.columns(6)
+        for i in range(0, 6, 3):
+            cols = st.columns(3)
+            for col, (label, value) in zip(cols, metrics[i:i+3]):
+                col.markdown(f"""
+                <div class="metric-card">
+                    <div class="metric-title">{label}</div>
+                    <div class="metric-value">{value:.4f}</div>
+                </div>
+                """, unsafe_allow_html=True)
 
-    for col, (label, value) in zip(cols, kpi_data):
-        col.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-label">{label}</div>
-            <div class="kpi-value">{value:.4f}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<hr>", unsafe_allow_html=True)
-    st.header("📈 Confusion Matrix")
+        st.markdown("<div class='glass'>", unsafe_allow_html=True)
+        st.subheader("📈 Confusion Matrix")
 
-    cm = confusion_matrix(y_true, y_pred)
+        cm = confusion_matrix(y_true, y_pred)
 
-    fig, ax = plt.subplots(figsize=(4, 4))
-    sns.heatmap(
-        cm,
-        annot=True,
-        fmt="d",
-        cmap="Blues",
-        cbar=False,
-        square=True,
-        ax=ax
-    )
+        fig, ax = plt.subplots(figsize=(4,4))
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False, square=True, ax=ax)
+        fig.patch.set_facecolor("#020617")
+        ax.set_facecolor("#020617")
+        st.pyplot(fig)
 
-    ax.set_facecolor("#0b1220")
-    fig.patch.set_facecolor("#0b1220")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    st.pyplot(fig)
-
-st.markdown("<div class='footer'>Enterprise Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer'>© Enterprise Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
